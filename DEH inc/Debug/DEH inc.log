@@ -1,0 +1,6 @@
+﻿  DEH inc.cpp
+d:\balefire\documents\dev\c++\deh inc\deh inc\deh inc.cpp(11): warning C4603: 'NOMINMAX': macro is not defined or definition is different after precompiled header use
+  d:\balefire\documents\dev\c++\deh inc\deh inc\deh inc.cpp(11): note: Add macro to precompiled header instead of defining here
+  d:\balefire\documents\dev\c++\deh inc\deh inc\deh inc.cpp(12): note: use of precompiled header
+  DEH inc.vcxproj -> D:\Balefire\Documents\Dev\C++\DEH inc\Debug\DEH inc.exe
+  DEH inc.vcxproj -> D:\Balefire\Documents\Dev\C++\DEH inc\Debug\DEH inc.pdb (Full PDB)
