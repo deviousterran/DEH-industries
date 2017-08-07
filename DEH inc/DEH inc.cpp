@@ -15,6 +15,7 @@ Program: Modeler Pro
 #include <stdexcept>
 #include <windows.h>
 #include <stdlib.h>
+#include "Company.h"
 
 
 using namespace std;
@@ -74,14 +75,16 @@ struct console
 
 void introduction();
 void mainMenu();
+void companyDefinition();
 
+Company current;
 console con(600,800);
 
 int main()
 {
 
 	introduction();
-
+	mainMenu();
 
 	con.color(0x1B);
 	cout << "Press ";
@@ -125,10 +128,33 @@ void introduction() {
 
 
 void mainMenu() {
-	std::cout <<" welcome to modeler pro, your go-to tool"
+	std::cout << " welcome to modeler pro, your go-to tool for modeling your startup's success\n";
+	std::cout << "  you will first need to specify your start-up's information.  Please follow the promps to do this\n";
+	companyDefinition();
 
 
 
 
+}
+
+
+void companyDefinition() {
+	bool badinput = true;
+
+	while (badinput)
+	{
+		std::cout << "Please name your company\n";
+		std::cin >> current.companyName;
+		if (current.companyName.length() > 2)
+		{
+			badinput = false;
+		}
+		else {
+			std::cout << "invalid input\n";
+			std::cout << "Please name your company";
+		}
+	}
+
+	std::cout << "your company name is " << current.companyName;
 
 }
