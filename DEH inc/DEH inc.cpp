@@ -35,74 +35,29 @@ using namespace std;
 //??
 //profit
 
-struct console
-{
-	console(unsigned width, unsigned height)
-	{
-		SMALL_RECT r;
-		COORD      c;
-		hConOut = GetStdHandle(STD_OUTPUT_HANDLE);
-		if (!GetConsoleScreenBufferInfo(hConOut, &csbi))
-			throw runtime_error("You must be attached to a human.");
 
-		r.Left =
-			r.Top = 0;
-		r.Right = width - 1;
-		r.Bottom = height - 1;
-		SetConsoleWindowInfo(hConOut, TRUE, &r);
-
-		c.X = width;
-		c.Y = height;
-		SetConsoleScreenBufferSize(hConOut, c);
-	}
-
-	~console()
-	{
-		SetConsoleTextAttribute(hConOut, csbi.wAttributes);
-		SetConsoleScreenBufferSize(hConOut, csbi.dwSize);
-		SetConsoleWindowInfo(hConOut, TRUE, &csbi.srWindow);
-	}
-
-	void color(WORD color = 0x07)
-	{
-		SetConsoleTextAttribute(hConOut, color);
-	}
-
-	HANDLE                     hConOut;
-	CONSOLE_SCREEN_BUFFER_INFO csbi;
-};
 
 
 void introduction();
 void mainMenu();
 void companyDefinition();
+void productDefinition();
+void runSimulation();
+BOOL companyDefined = FALSE;
+BOOL productsDefined = FALSE;
 
 Company current;
-console con(600,800);
 
 int main()
 {
+	HWND console = GetConsoleWindow();
+	RECT r;
+	GetWindowRect(console, &r);
+
+	MoveWindow(console, r.left, r.top, 800, 600, TRUE);
 
 	introduction();
 	mainMenu();
-
-	con.color(0x1B);
-	cout << "Press ";
-	con.color(0x5E);
-	cout << " ENTER ";
-	con.color(0x1B);
-	cout << " to quit.\n";
-
-
-
-
-
-
-
-
-
-
-
 
 	system("pause");
     return 0;
@@ -111,14 +66,14 @@ int main()
 
 void introduction() {
 	std::cout << "\n\n";
-	std::cout << " лллллл   лллллл              ллллл         лллл                        ллллллллллл\n";
-	std::cout << " ААлллллл лллллл              ААллл         ААллл                       ААлллАААААллл                  \n";
-	std::cout << "	АлллАлллллАллл   лллллл   ллллллл   лллллл Аллл   лллллл  лллллллл     Аллл    Аллллллллллл  лллллл   \n";
-	std::cout << "	АлллААллл Аллл  лллААллл лллААллл  лллААлллАллл  лллААлллААлллААллл    АллллллллллААлллААллллллААллл  \n";
-	std::cout << "	Аллл ААА  Аллл Аллл АлллАллл Аллл Аллллллл Аллл Аллллллл  Аллл ААА     АлллАААААА  Аллл ААААллл Аллл  \n";
-	std::cout << "	Аллл      Аллл Аллл АлллАллл Аллл АлллААА  Аллл АлллААА   Аллл         Аллл        Аллл    Аллл Аллл  \n";
-	std::cout << "	ллллл     лллллААлллллл ААллллллллААлллллл лллллААлллллл  ллллл        ллллл       ллллл   ААлллллл   \n";
-	std::cout << "	ААААА     ААААА  АААААА   АААААААА  АААААА ААААА  АААААА  ААААА        ААААА       ААААА     АААААА   \n";
+	std::cout << "	лллллл   лллллл              ллллл         лллл                        ллллллллллл\n";
+	std::cout << "	ААлллллл лллллл              ААллл         ААллл                       ААлллАААААллл               \n";
+	std::cout << "	 АлллАлллллАллл   лллллл   ллллллл   лллллл Аллл   лллллл  лллллллл     Аллл    Аллллллллллл  лллллл   \n";
+	std::cout << "	 АлллААллл Аллл  лллААллл лллААллл  лллААлллАллл  лллААлллААлллААллл    АллллллллллААлллААллллллААллл  \n";
+	std::cout << "	 Аллл ААА  Аллл Аллл АлллАллл Аллл Аллллллл Аллл Аллллллл  Аллл ААА     АлллАААААА  Аллл ААААллл Аллл  \n";
+	std::cout << "	 Аллл      Аллл Аллл АлллАллл Аллл АлллААА  Аллл АлллААА   Аллл         Аллл        Аллл    Аллл Аллл  \n";
+	std::cout << "	 ллллл     лллллААлллллл ААллллллллААлллллл лллллААлллллл  ллллл        ллллл       ллллл   ААлллллл   \n";
+	std::cout << " 	ААААА     ААААА  АААААА   АААААААА  АААААА ААААА  АААААА  ААААА        ААААА       ААААА     АААААА   \n";
 	std::cout << "\n\n     System Loaded press any key to continue";
 	std::cin.get();
 	system("CLS");
@@ -128,14 +83,67 @@ void introduction() {
 
 
 void mainMenu() {
+	system("CLS");
+	cout << flush;
+	string selection;
+	bool badinput = true;
+	int result;
 	std::cout << " welcome to modeler pro, your go-to tool for modeling your startup's success\n";
-	std::cout << "  you will first need to specify your start-up's information.  Please follow the promps to do this\n";
-	companyDefinition();
+	std::cout << "You will be first asked to define your proposed company, then to define your product(s)\n";
+	std::cout << "Modeler Pro will then simulate the monthly performance of your company and show how \n";
+	std::cout << "Successful (or not) you company is based on your specifications \n\n\n\n";
+	std::cout << "Please choose a option:\n1) Define Company";
+	if (companyDefined)
+	{
+		std::cout << " <DONE>";
+	}
+	std::cout << "\n";
+	std::cout << "2) Define Products";
+	if (productsDefined)
+	{
+		std::cout << " <DONE>";
+	}
+	std::cout << "\n";
+	std::cout << "3) Run Simulation";
+	if (companyDefined && productsDefined)
+	{
+		std::cout << " <READY>";
+	}
+	else
+	{
+		std::cout << " <NOT READY>";
+	}
+	std::cout << "\n\n>>";
 
+	while (badinput)
+	{
+
+		cin >> selection;
+		result = atoi(selection.c_str());
+
+		switch (result)
+		{
+		case 1:
+			companyDefinition();
+			break;
+		case 2:
+			productDefinition();
+			break;
+		case 3:
+			runSimulation();
+			break;
+		default:
+			std::cout << "that is not a valid selection";
+			break;
+		}
+		//std::cout << "this is the result tester:" << result << "\n";
+	}
 
 
 
 }
+
+
 
 
 void companyDefinition() {
@@ -143,7 +151,7 @@ void companyDefinition() {
 
 	while (badinput)
 	{
-		std::cout << "Please name your company\n";
+		std::cout << "Please name your company\n>>";
 		std::cin >> current.companyName;
 		if (current.companyName.length() > 2)
 		{
@@ -151,10 +159,26 @@ void companyDefinition() {
 		}
 		else {
 			std::cout << "invalid input\n";
-			std::cout << "Please name your company";
+			std::cout << "Please name your company\n>> ";
 		}
 	}
 
-	std::cout << "your company name is " << current.companyName;
+	std::cout << "your company name is " << current.companyName << "\n";
+	system("pause");
+	mainMenu();
 
+}
+
+void productDefinition() {
+
+	std::cout << "empty... this is where the product definition goes\n";
+	system("pause");
+	mainMenu();
+
+}
+void runSimulation() {
+
+	std::cout << "empty... this is where the simulation kicks off\n";
+	system("pause");
+	mainMenu();
 }
