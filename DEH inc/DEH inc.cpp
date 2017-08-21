@@ -16,6 +16,7 @@ Program: Modeler Pro
 #include <windows.h>
 #include <stdlib.h>
 #include "Company.h"
+#include <conio.h>
 
 
 using namespace std;
@@ -43,8 +44,11 @@ void mainMenu();
 void companyDefinition();
 void productDefinition();
 void runSimulation();
-BOOL companyDefined = FALSE;
-BOOL productsDefined = FALSE;
+//int wherey();
+//int wherex();
+//void gotoxy(int column, int line);
+bool companyDefined = FALSE;
+bool productsDefined = FALSE;
 
 Company current;
 
@@ -112,7 +116,9 @@ void mainMenu() {
 	else
 	{
 		std::cout << " <NOT READY>";
-	}
+	}	
+	std::cout << "\n";
+	std::cout << "4) exit";
 	std::cout << "\n\n>>";
 
 	while (badinput)
@@ -125,12 +131,27 @@ void mainMenu() {
 		{
 		case 1:
 			companyDefinition();
+			companyDefined = true;
+			mainMenu();
 			break;
 		case 2:
 			productDefinition();
+			productsDefined = true;
+			mainMenu();
 			break;
 		case 3:
-			runSimulation();
+			if (companyDefined && productsDefined)
+			{
+				runSimulation();
+			}
+			else {
+				std::cout << "you must finish your definitions first\n";
+			}
+			system("pause");
+			mainMenu();
+			break;
+		case 4:
+			exit(0);
 			break;
 		default:
 			std::cout << "that is not a valid selection";
@@ -145,7 +166,7 @@ void mainMenu() {
 
 
 
-
+//UI to define the Company variables
 void companyDefinition() {
 	bool badinput = true;
 
@@ -161,24 +182,104 @@ void companyDefinition() {
 			std::cout << "invalid input\n";
 			std::cout << "Please name your company\n>> ";
 		}
+
 	}
+	badinput = true;
+	while (badinput)
+	{
+		string input;
+		std::cout << "please input your starting capital (eg: 100000)\n>>";
+		std::cin >> input;
+		current.startupFunds = atoi(input.c_str());
+		if (0 < current.startupFunds)
+		{
+			current.liquidCapital = current.startupFunds;
+			badinput = false;
+		}
+		else {
+			std::cout << "invalid input\n";
+		}
 
-	std::cout << "your company name is " << current.companyName << "\n";
+	}
+	std::cout << "your company's name is " << current.companyName << " and you're staring with $" << current.startupFunds << "\n";
 	system("pause");
-	mainMenu();
 
 }
-
+//this is for the product definition
 void productDefinition() {
+	string selection;
+	bool badinput = true;
+	int result;
 
-	std::cout << "empty... this is where the product definition goes\n";
+	while (badinput)
+	{
+		std::cout << "please choose the number of products you would like to simulate (1-3)\n>>";
+		cin >> selection;
+		result = atoi(selection.c_str());
+		if (0 > result > 3)
+		{
+			std::cout << "invalid input\n";
+		}
+		else {
+			badinput = false;
+			cout << "O.K. let's define each product now, in order\n";
+		}
+
+	}
+	for (int i = 0; i < result; i++)
+	{
+		Item newItem;
+
+		newItem.setItem();
+		newItem.setMonthsToPrototype();
+		newItem.setprototypingCost(current.liquidCapital);
+		current.liquidCapital = current.liquidCapital - newItem.getprototypingCost();
+		current.itemList.push_back(newItem);
+	}
 	system("pause");
-	mainMenu();
-
 }
+
+//this is where the simulation will kick off
 void runSimulation() {
 
 	std::cout << "empty... this is where the simulation kicks off\n";
 	system("pause");
 	mainMenu();
 }
+//some drek to do stuff with teh cursor and set up a nifty display in the main menu
+/*
+int wherex()
+{
+	CONSOLE_SCREEN_BUFFER_INFO csbi;
+	COORD result;
+	if (!GetConsoleScreenBufferInfo(
+		GetStdHandle(STD_OUTPUT_HANDLE),
+		&csbi
+	))
+		return -1;
+	return result.X;
+}
+
+int wherey()
+{
+	CONSOLE_SCREEN_BUFFER_INFO csbi;
+	COORD result;
+	if (!GetConsoleScreenBufferInfo(
+		GetStdHandle(STD_OUTPUT_HANDLE),
+		&csbi
+	))
+		return -1;
+	return result.Y;
+}
+
+void gotoxy(int column, int line)
+{
+	COORD coord;
+	coord.X = column;
+	coord.Y = line;
+	SetConsoleCursorPosition(
+		GetStdHandle(STD_OUTPUT_HANDLE),
+		coord
+	);
+}
+*/

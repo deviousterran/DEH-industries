@@ -9,7 +9,7 @@ public:
 	Company();
 	~Company();
 	double liquidCapital;
-//	std::vector<Item> itemList;
+	std::vector<Item> itemList;
 	double startupFunds;
 	std::string companyName;
 

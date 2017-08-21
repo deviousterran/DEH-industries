@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <iostream>
 
 
 
@@ -12,12 +13,17 @@ class Item
 	double prototypingCost;
 	int monthsToPrototype;
 	double shippingCostsPerItem;
+	int numberOfItemsOnHand;
 
 
 public:
 	Item();
 	~Item();
 
+	void setItem();
+	void setMonthsToPrototype();
+	void setprototypingCost(int availableFunds);
+	double getprototypingCost();
 	//need getters and setters
 
 };
