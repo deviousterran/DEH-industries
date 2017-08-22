@@ -6,13 +6,14 @@
 
 class Item
 {
-	double monthlyProductionCostsPerItem; // everything is per item
+	double monthlyProductionCostsPerItem; // everything is per item and per month
 	int monthlyProductionPerItem;
 	int targetShippingTotal;
 	std::string itemName;
 	double prototypingCost;
 	int monthsToPrototype;
 	double shippingCostsPerItem;
+	double ManufacturingCostsPerItem;
 	int numberOfItemsOnHand;
 
 
@@ -24,10 +25,11 @@ public:
 	void setMonthsToPrototype();
 	void setprototypingCost(int availableFunds);
 	double getprototypingCost();
+	void setCostPerPieceToManufacture();
+	void setCostPerPieceToDistribute();
+	void setMonthlyDistributionTarget();
+	void setMonthlyManufacturingQuota();
 	//need getters and setters
 
 };
-//shipping volume
-//prototyping costs
-//product name
-//
+

@@ -27,10 +27,10 @@ using namespace std;
 //company class is parent to the simulation class
 
 //program flow... main menu
-//run simultaion
+//run simulation
 //enter startup information
 //add items
-//define simulation terms (metircs?)
+//define simulation terms (metrics?)
 //run simulation  (in place variable updating? or scroll)
 //final simulation results
 //??
@@ -168,40 +168,12 @@ void mainMenu() {
 
 //UI to define the Company variables
 void companyDefinition() {
-	bool badinput = true;
+	//sets the company name
+	current.setCompanyName();
+	//sets the startup funds
+	current.setStartupFunds();
 
-	while (badinput)
-	{
-		std::cout << "Please name your company\n>>";
-		std::cin >> current.companyName;
-		if (current.companyName.length() > 2)
-		{
-			badinput = false;
-		}
-		else {
-			std::cout << "invalid input\n";
-			std::cout << "Please name your company\n>> ";
-		}
-
-	}
-	badinput = true;
-	while (badinput)
-	{
-		string input;
-		std::cout << "please input your starting capital (eg: 100000)\n>>";
-		std::cin >> input;
-		current.startupFunds = atoi(input.c_str());
-		if (0 < current.startupFunds)
-		{
-			current.liquidCapital = current.startupFunds;
-			badinput = false;
-		}
-		else {
-			std::cout << "invalid input\n";
-		}
-
-	}
-	std::cout << "your company's name is " << current.companyName << " and you're staring with $" << current.startupFunds << "\n";
+	std::cout << "your company's name is " << current.getCompanyName() << " and you're staring with $" << current.getStartupFunds() << "\n";
 	system("pause");
 
 }
@@ -210,7 +182,7 @@ void productDefinition() {
 	string selection;
 	bool badinput = true;
 	int result;
-
+	//a quick loop and input checker to get the number of products
 	while (badinput)
 	{
 		std::cout << "please choose the number of products you would like to simulate (1-3)\n>>";
@@ -229,11 +201,21 @@ void productDefinition() {
 	for (int i = 0; i < result; i++)
 	{
 		Item newItem;
-
+		//set the new item
 		newItem.setItem();
+		//set the time to prototype
 		newItem.setMonthsToPrototype();
-		newItem.setprototypingCost(current.liquidCapital);
-		current.liquidCapital = current.liquidCapital - newItem.getprototypingCost();
+		//set the prototyping cost.  passes the liquid capital amount as a parameter so the user knows how much is in the coffers
+		newItem.setprototypingCost(current.getLiquidCapital());
+		//decreases the coffers by the prototyping cost
+		current.addExpense(newItem.getprototypingCost());
+
+		newItem.setCostPerPieceToManufacture();
+		newItem.setCostPerPieceToDistribute();
+		newItem.setMonthlyDistributionTarget();
+		newItem.setMonthlyManufacturingQuota();
+
+		//adds the current item to the item list
 		current.itemList.push_back(newItem);
 	}
 	system("pause");
@@ -246,7 +228,8 @@ void runSimulation() {
 	system("pause");
 	mainMenu();
 }
-//some drek to do stuff with teh cursor and set up a nifty display in the main menu
+//some drek to do stuff with the cursor and set up a nifty display in the main menu.  doesn't work... yet.
+//ideally we will display setup info below the input line, so users can see current configuration information.  something we lack, currently.
 /*
 int wherex()
 {

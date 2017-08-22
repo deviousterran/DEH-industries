@@ -1,13 +1,8 @@
-﻿  stdafx.cpp
-  Simulation.cpp
-  Item.cpp
-  DEH inc.cpp
+﻿  DEH inc.cpp
 d:\balefire\documents\dev\c++\deh inc\deh inc\deh inc.cpp(11): warning C4603: 'NOMINMAX': macro is not defined or definition is different after precompiled header use
   d:\balefire\documents\dev\c++\deh inc\deh inc\deh inc.cpp(11): note: Add macro to precompiled header instead of defining here
   d:\balefire\documents\dev\c++\deh inc\deh inc\deh inc.cpp(12): note: use of precompiled header
-d:\balefire\documents\dev\c++\deh inc\deh inc\deh inc.cpp(219): warning C4804: '>': unsafe use of type 'bool' in operation
-d:\balefire\documents\dev\c++\deh inc\deh inc\deh inc.cpp(235): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-  Company.cpp
-  Generating Code...
+d:\balefire\documents\dev\c++\deh inc\deh inc\deh inc.cpp(191): warning C4804: '>': unsafe use of type 'bool' in operation
+d:\balefire\documents\dev\c++\deh inc\deh inc\deh inc.cpp(209): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
   DEH inc.vcxproj -> D:\Balefire\Documents\Dev\C++\DEH inc\Debug\DEH inc.exe
   DEH inc.vcxproj -> D:\Balefire\Documents\Dev\C++\DEH inc\Debug\DEH inc.pdb (Full PDB)
