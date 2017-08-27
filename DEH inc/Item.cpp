@@ -16,7 +16,7 @@ void Item::setItem() {
 	while (badinput)
 	{
 		std::cout << "Please name your Item\n>>";
-		std::cin >> itemName;
+		std::cin.getline(itemName,);
 		if (itemName.length() > 2)
 		{
 			badinput = false;

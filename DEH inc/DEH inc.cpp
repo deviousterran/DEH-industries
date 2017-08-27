@@ -17,9 +17,9 @@ Program: Modeler Pro
 #include <stdlib.h>
 #include "Company.h"
 #include <conio.h>
+#include <stdlib.h>
 
 
-using namespace std;
 //classes... need one for initialization
 // then a item class to hold all the members in that class
 //then a simulation class
@@ -81,15 +81,15 @@ void introduction() {
 	std::cout << "\n\n     System Loaded press any key to continue";
 	std::cin.get();
 	system("CLS");
-	cout << flush;
+	std::cout << std::flush;
 
 }
 
 
 void mainMenu() {
 	system("CLS");
-	cout << flush;
-	string selection;
+	std::cout << std::flush;
+	std::string selection;
 	bool badinput = true;
 	int result;
 	std::cout << " welcome to modeler pro, your go-to tool for modeling your startup's success\n";
@@ -124,17 +124,51 @@ void mainMenu() {
 	while (badinput)
 	{
 
-		cin >> selection;
+		std::cin >> selection;
 		result = atoi(selection.c_str());
 
 		switch (result)
 		{
 		case 1:
+			if (companyDefined)
+			{
+				std::string confirm;
+				std::cout << "WARNING  if you continue, you will reset all previously entered data!\n";
+				std::cout << "continue? Y/N>>";
+				std::cin >> confirm;
+				//the only input that will allow the user to reset the data
+				if (confirm != "Y" || confirm != "y")
+				{
+					std::cout << "no data will be changed";
+					Sleep(2000);
+					mainMenu();
+				}
+				else {
+					std::cout << "data has been reset!\n";
+				}
+			}
 			companyDefinition();
 			companyDefined = true;
 			mainMenu();
 			break;
 		case 2:
+			if (productsDefined)
+			{
+				std::string confirm;
+				std::cout << "WARNING  if you continue, you will reset all previously entered data!\n";
+				std::cout << "continue? Y/N>>";
+				std::cin >> confirm;
+				//the only input that will allow the user to reset the data
+				if (confirm != "Y" || confirm != "y")
+				{
+					std::cout << "no data will be changed";
+					Sleep(2000);
+					mainMenu();
+				}
+				else {
+					std::cout << "data has been reset!\n";
+				}
+			}
 			productDefinition();
 			productsDefined = true;
 			mainMenu();
@@ -179,14 +213,14 @@ void companyDefinition() {
 }
 //this is for the product definition
 void productDefinition() {
-	string selection;
+	std::string selection;
 	bool badinput = true;
 	int result;
 	//a quick loop and input checker to get the number of products
 	while (badinput)
 	{
 		std::cout << "please choose the number of products you would like to simulate (1-3)\n>>";
-		cin >> selection;
+		std::cin >> selection;
 		result = atoi(selection.c_str());
 		if (0 > result > 3)
 		{
@@ -194,7 +228,7 @@ void productDefinition() {
 		}
 		else {
 			badinput = false;
-			cout << "O.K. let's define each product now, in order\n";
+			std::cout << "O.K. let's define each product now, in order\n";
 		}
 
 	}
